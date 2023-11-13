@@ -1,26 +1,28 @@
-function setupNPW() {
+function setupPW() {
   fixAccordion('tab_txt2img');  
-  fixAccordion('tab_img2img');  
-  fixInputs('tab_txt2img');
-  fixInputs('tab_img2img');
+  fixAccordion('tab_img2img');
+
+  fixInputs('tab_txt2img', 'prompt');
+  fixInputs('tab_img2img', 'neg_prompt');
 }
 
-function fixInputs(tab) {
-  const npwSlider = document.querySelector(`#${tab} #npw-slider`);
+function fixInputs(tab, type) {
+  const elemId = `#${tab} #pw-${type}-prompt-slider`;
+  const slider = document.querySelector(elemId);
 
-  npwSlider.querySelector('.head').remove(); 
+  slider.querySelector('.head').remove();
 
   const newSpan = document.createElement("span");
-  newSpan.innerHTML = "Negative Prompt Weight";
-  const ancestor = npwSlider.parentNode.parentNode.parentNode;
+  newSpan.innerHTML = `${type[0].toUpperCase() + type.slice(1)} Weight`;
+  const ancestor = slider.parentNode.parentNode.parentNode;
   ancestor.insertBefore(newSpan, ancestor.firstChild);
 
-  document.querySelector(`#${tab} #npw-number input[type="number"]`).setAttribute("step", "0.01");
+  document.querySelector(`${elemId} + div input[type="number"]`).setAttribute("step", "0.01");
 }
 
 function fixAccordion(tab) {
-  document.querySelector(`#${tab} #npw .icon`).remove();
-  document.querySelector(`#${tab} #npw .open`).remove();  
+  document.querySelector(`#${tab} #pw .icon`).remove();
+  document.querySelector(`#${tab} #pw .open`).remove();
 }
 
-onUiLoaded(setupNPW);
+onUiLoaded(setupPW);
