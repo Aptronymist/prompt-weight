@@ -1,7 +1,7 @@
 
 # Negative Prompt Weight
 
-This is a simple extension for the [Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui), which allows users to adjust the overall weight of the negative prompt, allowing you to increase or decrease its effect in a new way. Oh, and it writes the value to PNGinfo, honors it during 'send to txt2img' etc., and supports XYZ Plot.
+This is a simple extension for ![SD.Next](https://github.com/vladmandic/automatic), which allows users to adjust the overall weight of the negative prompt, allowing you to increase or decrease its effect in a new way. Oh, and it writes the value to PNGinfo, honors it during 'send to txt2img' etc., and supports XYZ Plot.
 
 ## What Does It Do?
 
@@ -33,7 +33,7 @@ Open SD WebUI > Go to Extensions tab > Go to Available > Press the big button > 
 
 Or manually clone this repo into your extensions folder:
 
-`git clone "https://github.com/muerrilla/stable-diffusion-NPW" extensions/stable-diffusion-NPW`
+`git clone "https://github.com/Aptronymist/prompt-weight" extensions/prompt-weight`
 
 ## Usage
 
@@ -70,3 +70,7 @@ Here are some comparisons between NPW and Attention/Emphasis. So, top row is usi
 ## How It's Done
 
 At runtime a new learned conditioning tensor `empty_uncond` is made from an empty prompt. Then at every step, inside the denoiser callback, the scheduled `uncond` tensor of the denoiser (which is based on whatever prompt hijinks were passed to the parser) is lerped with the `empty_uncond` to weaken it's effect. The lerp function can instead be given a parameter bigger than 1, and it will boost the effect of the negative prompt like the CFG scale does for the positive.
+
+
+## Credit
+Original extension credit goes to https://github.com/muerrilla/stable-diffusion-NPW
