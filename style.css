@@ -13,6 +13,8 @@
   max-width: 30px;
   min-height: fit-content;
   font-weight: var(--button-large-text-weight);
+  border-radius: 0.5em;
+  border-width: 1px;
 }
 
 #npw .gradio-row {
@@ -25,7 +27,7 @@
 }
 
 #npw .form {
-  min-width: unset;
+  min-width: unset !important;
 }
 
 #npw-slider {

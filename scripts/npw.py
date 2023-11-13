@@ -23,7 +23,7 @@ class Script(scripts.Script):
                 with gr.Column(scale=1, min_width=120):
                     with gr.Row():
                         weight_input = gr.Number(value=1.00, precision=4, label="Negative Prompt Weight", show_label=False, elem_id="npw-number")   
-                        reset_but = gr.Button(value='✕', elem_id='npw-x').style(full_width=False, size='sm')               
+                        reset_but = gr.Button(value='✕', elem_id='npw-x', size='sm')        
 
             js = """(v) => {
               ['#tab_txt2img #npw-x', '#tab_img2img #npw-x'].forEach((selector, index) => {
@@ -34,17 +34,20 @@ class Script(scripts.Script):
               });
               return v;
             }"""
-
+               
             weight_input.change(None, [weight_input], weight_input_slider, _js=js)
             weight_input_slider.change(None, weight_input_slider, weight_input, _js="(x) => x")
             reset_but.click(None, [], [weight_input,weight_input_slider], _js="(x) => [1,1]")
 
 
-        self.infotext_fields = [(weight_input, "NPW_weight")]
+        self.infotext_fields = []        
+        self.infotext_fields.extend([
+            (weight_input, "NPW_weight"),
+        ])
         self.paste_field_names = []
-        self.paste_field_names.extend(
-            field_name for _, field_name in self.infotext_fields
-        )
+        for _, field_name in self.infotext_fields:
+            self.paste_field_names.append(field_name)
+
         return [weight_input]
     
 
@@ -94,12 +97,15 @@ class Script(scripts.Script):
         params.text_uncond = new_uncond
 
     def make_empty_uncond(self):
-        return shared.sd_model.get_learned_conditioning([""])
+        empty_uncond = shared.sd_model.get_learned_conditioning([""])
+        return empty_uncond
 
     def print_warning(self, value):
         if value == 1:
             return
-        color_code = '\033[93m' if value < 0.5 or value > 1.5 else '\033[33m'
+        color_code = '\033[33m'  
+        if value < 0.5 or value > 1.5:
+            color_code = '\033[93m'  
         print(f"\n{color_code}ATTENTION: Negative prompt weight is set to {value}\033[0m")
 
 
@@ -119,4 +125,4 @@ def xyz_support():
 try:
     xyz_support()
 except Exception as e:
-    print('Error trying to add XYZ plot options for Latentshop', e)
+    print(f'Error trying to add XYZ plot options for NPW', e)
